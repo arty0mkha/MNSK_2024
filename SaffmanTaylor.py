@@ -20,6 +20,8 @@ def get_velocities(Pressure, viscosity, Width, dx, dy):
     dp_dx = (Pressure[:,2:]-Pressure[:,:-2])/(2*dx)
     dp_dy = (Pressure[2:]-Pressure[:-2])/(2*dy)
     u, v = -Width**2/(12*viscosity)*dp_dx[1:-1], -Width**2/(12*viscosity)*dp_dy[:,1:-1]
+    u.T[0] = -Width**2/(12*viscosity.T[0])*(Pressure.T[1, 1:-1]-Pressure.T[0, 1:-1])/dx
+    u.T[0] = -Width**2/(12*viscosity.T[-1])*(Pressure.T[-1, 1:-1]-Pressure.T[-2, 1:-1])/dx
     v[0] = 0 # непротекание?
     v[-1] = 0 # непротекание?
     return u, v
@@ -73,7 +75,7 @@ def STI_solver(Nt,
     times = np.zeros(Nt)
 
     W = W0 # np.random.uniform(low=W0*0.9, high=W0*1.1, size=(Ny, Nx))
-    CFL = 0.4
+    CFL = 0.2
     MU1 = mu1
     MU2 = mu2   
     Poisson_error = np.zeros(Nt)
