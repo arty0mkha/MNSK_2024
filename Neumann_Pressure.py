@@ -36,20 +36,20 @@ def make_pure_Neumann_matrix(Nx, Ny, A, dx=1, dy=1):
     # Poisson_top 
     # i=1, j=1, ..., Nx-2
     for j in range(1, Nx-1):
-        Matrix[ Nx-2+j, Nx-2+j] = -(A[1-1,j] + A[1-1,j+1])/(dx**2) - 2*A[1-1,j]/(dy**2) # i, j ячейка матрицы давления
-        Matrix[ Nx-2+j, Nx-2 + j +1] = A[1-1,j+1]/(dx**2) # i, j+1
-        Matrix[ Nx-2+j, Nx-2 + j -1] = A[1-1,j]/(dx**2) # i, j-1
-        Matrix[ Nx-2+j, Nx-2 + j + (Nx)] = A[1-1, j]/(dy**2) # i+1, j
-        Matrix[ Nx-2+j, Nx-2 + j - (Nx-1)] = A[1-1,j]/(dy**2) # i-1, j
+        Matrix[ Nx-2+j, Nx-2+j] = -(A[1,j] + A[1,j+1])/(dx**2) - 2*A[1,j]/(dy**2) # i, j ячейка матрицы давления
+        Matrix[ Nx-2+j, Nx-2 + j +1] = A[1,j+1]/(dx**2) # i, j+1
+        Matrix[ Nx-2+j, Nx-2 + j -1] = A[1,j]/(dx**2) # i, j-1
+        Matrix[ Nx-2+j, Nx-2 + j + (Nx)] = A[1, j]/(dy**2) # i+1, j
+        Matrix[ Nx-2+j, Nx-2 + j - (Nx-1)] = A[1,j]/(dy**2) # i-1, j
 
     # Poisson_bottom
     # i=Ny-2, j =1, ..., Nx-2 
     for j in range(1, Nx-1):
-        Matrix[ -1 -(Nx-2+j), -1 -(Nx-2+j)] = -(A[Ny-2-1,j] + A[Ny-2-1,j+1])/(dx**2) - 2*A[Ny-2-1,j]/(dy**2) # i, j ячейка матрицы давления
-        Matrix[ -1 -(Nx-2+j), -1 -(Nx-2+j) +1] = (2*A[Ny-2-1,j+1]-A[Ny-2-1,j])/(dx**2) # i, j+1
-        Matrix[ -1 -(Nx-2+j), -1 -(Nx-2+j) -1] = A[Ny-2-1,j]/(dx**2) # i, j-1
-        Matrix[ -1 -(Nx-2+j), -1 -(Nx-2+j) + (Nx-1)] = A[Ny-2-1, j]/(dy**2) # i+1, j
-        Matrix[ -1 -(Nx-2+j), -1 -(Nx-2+j) - (Nx)] = A[Ny-2-1,j]/(dy**2) # i-1, j
+        Matrix[ -1 -(Nx-2+j), -1 -(Nx-2+j)] = -(A[Ny-2,j] + A[Ny-2,j+1])/(dx**2) - 2*A[Ny-2,j]/(dy**2) # i, j ячейка матрицы давления
+        Matrix[ -1 -(Nx-2+j), -1 -(Nx-2+j) +1] = (2*A[Ny-2,j+1]-A[Ny-2,j])/(dx**2) # i, j+1
+        Matrix[ -1 -(Nx-2+j), -1 -(Nx-2+j) -1] = A[Ny-2,j]/(dx**2) # i, j-1
+        Matrix[ -1 -(Nx-2+j), -1 -(Nx-2+j) + (Nx-1)] = A[Ny-2, j]/(dy**2) # i+1, j
+        Matrix[ -1 -(Nx-2+j), -1 -(Nx-2+j) - (Nx)] = A[Ny-2,j]/(dy**2) # i-1, j
 
     # Poisson central
     for i in range(2, Ny - 2): # номер блока
@@ -140,7 +140,7 @@ def pure_Neumann_Poisson_solver(A,  f, BC_top, BC_bottom, BC_left, BC_right, Nx=
         plt.semilogy(np.abs(1-matrix@pressure_vec/np.where(new_right_side_vec==0, 1, new_right_side_vec)))
         plt.ylabel("MSPE %")
         plt.title('error')
-        plt.savefig('maybe something go wrong.png')
+        plt.savefig('maybe something went wrong.png')
         plt.show()
     return Pressure_matrix, error_MSP
     
